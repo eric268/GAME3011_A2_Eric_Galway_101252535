@@ -2165,7 +2165,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6f7f49d02648e4da556cfdf35a8f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   rotationSpeed: 0.001
+  pickBlendHashValue: 1784438316
 --- !u!4 &8490584712351362625
 Transform:
   m_ObjectHideFlags: 0
@@ -2357,6 +2359,7 @@ GameObject:
   - component: {fileID: 7443654539932129901}
   - component: {fileID: 8957044128249510842}
   - component: {fileID: 8957044128249510841}
+  - component: {fileID: 8957044128249510843}
   m_Layer: 0
   m_Name: MetalLock
   m_TagString: MetalLock
@@ -2376,7 +2379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56fe4cb21abae7a4a830342943be4c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockRotationSpeed: 1
+  rotationSpeed: 1
 --- !u!95 &8957044128249510842
 Animator:
   serializedVersion: 3
@@ -2396,6 +2399,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8957044128249510843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957044128249510840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51eabe7dceb85a74cb83e9e858e696d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockDifficulty: 0
+  easyUnlockRange: 0.2
+  mediumUnlockRange: 0.1
+  hardUnlockRange: 0.05
+  easyLockTurnRatio: 10
+  mediumLockTurnRatio: 20
+  hardLockTurnRatio: 30
+  currentLockTurnRatio: 0
+  currentDifficultyRange: 0
+  minUnlockSpot: 0
+  maxUnlockSpot: 0
 --- !u!1 &9124096457834558715
 GameObject:
   m_ObjectHideFlags: 0

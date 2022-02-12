@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LockPickMovementScript : MonoBehaviour
 {
-    Animator animator;
+    public Animator animator;
     private GameObject keyHole;
     private bool freezeLockPickRotation;
     private float currentMouseXPos;
@@ -13,7 +13,7 @@ public class LockPickMovementScript : MonoBehaviour
     public float rotationSpeed;
     float pickRotationCount;
     private bool mouseDown;
-    private readonly int lockMovementHashValue = Animator.StringToHash("Blend");
+    public int pickBlendHashValue = Animator.StringToHash("Blend");
 
     private void Awake()
     {
@@ -67,7 +67,7 @@ public class LockPickMovementScript : MonoBehaviour
             float distance = currentMouseXPos - prevMouseXPos;
             pickRotationCount += distance * rotationSpeed;
             pickRotationCount = Mathf.Clamp(pickRotationCount, 0.0f, 1.0f);
-            animator.SetFloat(lockMovementHashValue, pickRotationCount);
+            animator.SetFloat(pickBlendHashValue, pickRotationCount);
             prevMouseXPos = currentMouseXPos;
         }
     }
