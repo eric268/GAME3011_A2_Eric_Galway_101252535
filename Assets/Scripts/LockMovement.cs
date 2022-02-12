@@ -7,12 +7,14 @@ public class LockMovement : MonoBehaviour
 {
     private Animator animator;
     private LockPickMovementScript lockPick;
+    private KeyMovement keyMovement;
     private readonly int blendHashValue = Animator.StringToHash("Blend");
     private float lockRotationCount;
     public float lockRotationSpeed;
     private bool tryToOpenLock;
     private bool gameWon;
     Action<bool> FreezeLockPickRotation;
+    Action<float> UpdateKeyRotation;
     // Start is called before the first frame update
 
     private void Awake()
@@ -23,8 +25,10 @@ public class LockMovement : MonoBehaviour
 
     private void Start()
     {
+        keyMovement = GameObject.FindObjectOfType<KeyMovement>();
         lockPick = GameObject.FindObjectOfType<LockPickMovementScript>();
         FreezeLockPickRotation = lockPick.FreeLockPickRotation;
+        UpdateKeyRotation = keyMovement.SetKeyRotation;
     }
 
     public void SetUnlockPercentage(float percentage)
@@ -58,6 +62,7 @@ public class LockMovement : MonoBehaviour
         {
             lockRotationCount += lockRotationSpeed * Time.deltaTime;
             SetUnlockPercentage(lockRotationCount);
+            UpdateKeyRotation(lockRotationCount);
             if (lockRotationCount >= 1.0f)
             {
                 gameWon = true;
@@ -68,6 +73,7 @@ public class LockMovement : MonoBehaviour
         {
             lockRotationCount -= lockRotationSpeed * Time.deltaTime;
             SetUnlockPercentage(lockRotationCount);
+            UpdateKeyRotation(lockRotationCount);
         }
         lockRotationCount = Mathf.Clamp(lockRotationCount, 0.0f, 1.0f);
         if (lockRotationCount == 0.0f)

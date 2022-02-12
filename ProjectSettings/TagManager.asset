@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KeyHole
   - MetalLock
+  - Key
   layers:
   - Default
   - TransparentFX
