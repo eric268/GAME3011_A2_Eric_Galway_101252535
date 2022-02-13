@@ -9,6 +9,7 @@ public class LockManager : MonoBehaviour
     private LockPickManager lockPick;
     private UnlockAttributes unlockAttributes;
     private KeyMovement keyMovement;
+    private UIManager uIManager;
     private readonly int blendHashValue = Animator.StringToHash("Blend");
     private float rotationCounter;
     private float pickMovementAmountOnDamage;
@@ -16,6 +17,7 @@ public class LockManager : MonoBehaviour
     private bool lockPickTakingDamage;
     private bool lockPickBroken;
     private bool doorOpened;
+    public bool gameWon;
     Action<bool> FreezeLockPickRotation;
     Action<float> UpdateKeyRotation;
     Action PlayBrokenPickAnim;
@@ -33,13 +35,28 @@ public class LockManager : MonoBehaviour
 
     private void Start()
     {
-        keyMovement = GameObject.FindObjectOfType<KeyMovement>();
-        lockPick = GameObject.FindObjectOfType<LockPickManager>();
+        keyMovement = FindObjectOfType<KeyMovement>();
+        lockPick = FindObjectOfType<LockPickManager>();
+        uIManager = FindObjectOfType<UIManager>();
         FreezeLockPickRotation = lockPick.FreeLockPickRotation;
         UpdateKeyRotation = keyMovement.SetKeyRotation;
         PlayBrokenPickAnim = lockPick.LockPickBroke;
 
+
         pickMovementAmountOnDamage = minimumLockMovement;
+    }
+
+    public void ResetLock()
+    {
+        gameWon = false;
+        attemptToOpenLock = false;
+        FreezeLockPickRotation(false);
+        doorOpened = false;
+        lockPickBroken = false;
+        lockPickTakingDamage = false;
+        rotationCounter = 0.0f;
+        SetLockBlendValue(rotationCounter);
+        CancelInvoke("DamageLockPick");
     }
 
     public void SetLockBlendValue(float percentage)
@@ -117,6 +134,8 @@ public class LockManager : MonoBehaviour
         {
             SoundEffectManager.PlaySound("DoorOpen");
             doorOpened = true;
+            gameWon = true;
+            uIManager.GameOver();
         }
     }
     void CloseLock()

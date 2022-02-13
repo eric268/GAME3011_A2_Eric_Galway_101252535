@@ -21,7 +21,7 @@ public class UnlockAttributes : MonoBehaviour
 
     public float playerLevelEffectOnUnlockRange;
 
-    private void Start()
+    private void Awake()
     {
         SetUnlockAttributes();
     }
@@ -57,5 +57,11 @@ public class UnlockAttributes : MonoBehaviour
     LockDifficulty RandomlySelectLockDifficulty()
     {
         return (LockDifficulty)Random.Range(0, (int)LockDifficulty.Number_Of_Lock_Difficulties);
+    }
+
+    public void ResetUnlockAttributes()
+    {
+        lockDifficulty = RandomlySelectLockDifficulty();
+        SetUnlockAttributes();
     }
 }

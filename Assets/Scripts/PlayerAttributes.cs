@@ -8,7 +8,7 @@ public class PlayerAttributes : MonoBehaviour
     public int startingLevel;
     public int maxLevel;
 
-    private void Start()
+    private void Awake()
     {
         currentLevel = Random.Range(startingLevel, maxLevel);
     }

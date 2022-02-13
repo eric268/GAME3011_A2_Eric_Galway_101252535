@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    private bool gameRunning;
     private int secondsRemaining;
 
     public TextMeshProUGUI playerLevelText;
@@ -19,50 +20,84 @@ public class UIManager : MonoBehaviour
     public static int playerLevel;
     public static LockDifficulty lockDifficulty;
 
+    private Action ResetGame;
+    private KeyMovement keyMovement;
+    private LockManager lockManager;
+    private LockPickManager lockPickManager;
+    private PlayerAttributes playerAttributes;
+    private UnlockAttributes unlockAttributes;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        keyMovement = FindObjectOfType<KeyMovement>();
+        lockManager = FindObjectOfType<LockManager>();
+        lockPickManager = FindObjectOfType<LockPickManager>();
+        playerAttributes = FindObjectOfType<PlayerAttributes>();
+        unlockAttributes = FindObjectOfType<UnlockAttributes>();
+
+
+        ResetGame = keyMovement.ResetKeyPosition;
+        ResetGame += lockManager.ResetLock;
+        ResetGame += playerAttributes.RandomizePlayerLevel;
+        ResetGame += unlockAttributes.ResetUnlockAttributes;
+        ResetGame += lockPickManager.ResetPressed;
     }
 
-    // Update is called once per frame
-    void Update()
-    { 
-
+    void Start()
+    {
+        StartGame();
     }
 
     void StartGame()
     {
-        gameRunning = true;
-        InvokeRepeating("DecrementTime", 0.0f, 1.0f);
+        secondsRemaining = startingTime;
+        SetUIText();
+        if (!IsInvoking("DecrementTime"))
+            InvokeRepeating("DecrementTime", 0.0f, 1.0f);
     }
 
-    void OnResetGamePressed()
+    public void OnQuitButtonPressed()
     {
-
+        SceneManager.LoadScene("MainScene");
     }
 
-    void OnGameWon()
+    public void OnResetButtonPressed()
     {
-        gameRunning = false;
+        ResetGame();
+        StartGame();
     }
 
-    void OnGameLost()
+    public void GameOver()
     {
-        gameRunning = true;
+        CancelInvoke("DecrementTime");
+        if (lockManager.gameWon)
+        {
+            winLossMessageText.color = Color.green;
+            winLossMessageText.text = "You're in!";
+        }
+        else
+        {
+            winLossMessageText.color = Color.red;
+            winLossMessageText.text = "You got caught";
+        }
     }
 
     void DecrementTime()
     {
         secondsRemaining--;
-        timeDisplayText.text = secondsRemaining + " seconds remaining";
-
+        timeDisplayText.text = "Timer: " + secondsRemaining;
         if (secondsRemaining <= 0)
         {
-            gameRunning = false;
-            CancelInvoke("DecrementTime");
+            GameOver();
         }
     }
 
+    void SetUIText()
+    {
+        playerLevelText.text = "Player Level: " + PlayerAttributes.currentLevel;
+        successRateText.text = "Success Rate: %" + (unlockAttributes.currentDifficultyRange * 100.0f);
+        lockDifficultyText.text = "Lock Difficulty : " + unlockAttributes.lockDifficulty;
+        winLossMessageText.text = "";
+        timeDisplayText.text = "Timer: " + secondsRemaining;
+    }
 }

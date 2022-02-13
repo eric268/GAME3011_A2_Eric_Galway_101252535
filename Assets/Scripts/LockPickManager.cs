@@ -13,6 +13,7 @@ public class LockPickManager : MonoBehaviour
     public float rotationSpeed;
     float pickRotationCount;
     private bool mouseDown;
+    private Vector3 startingPos;
     public int pickBlendHashValue = Animator.StringToHash("Blend");
 
     PickBrokenScript[] lockPickParts;
@@ -89,13 +90,23 @@ public class LockPickManager : MonoBehaviour
         Invoke("ResetLockPick", 2.5f);
     }
 
-    void ResetLockPick()
+    public void ResetLockPick()
     {
         foreach (var pick in lockPickParts)
             pick.ResetPick();
-
         transform.position = keyHole.transform.position;
         pickRotationCount = 0;
-        //transform.eulerAngles = new Vector3(0, 0, 0);
+       //animator.SetFloat(pickBlendHashValue, pickRotationCount);
+        lockPickCurrentHealth = lockPickStartingHealth;
+    }
+
+    public void ResetPressed()
+    {
+        //foreach (var pick in lockPickParts)
+        //    pick.PickBroke();
+        Invoke("ResetLockPick", 0.1f);
+        animator.SetFloat(pickBlendHashValue, 0.0f);
+        lockPickCurrentHealth = lockPickStartingHealth;
+
     }
 }

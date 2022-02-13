@@ -16,4 +16,9 @@ public class KeyMovement : MonoBehaviour
     {
         animator.SetFloat(animBlendHash, val);
     }
+
+    public void ResetKeyPosition()
+    {
+        SetKeyRotation(0.0f);
+    }
 }
