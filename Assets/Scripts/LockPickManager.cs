@@ -81,6 +81,7 @@ public class LockPickManager : MonoBehaviour
 
     public void LockPickBroke()
     {
+        SoundEffectManager.PlaySound("PickBroke");
         foreach (var pick in lockPickParts)
             pick.PickBroke();
         animator.SetFloat(pickBlendHashValue, 0.0f);
@@ -92,7 +93,9 @@ public class LockPickManager : MonoBehaviour
     {
         foreach (var pick in lockPickParts)
             pick.ResetPick();
+
         transform.position = keyHole.transform.position;
-        transform.eulerAngles = new Vector3(0, 0, 0);
+        pickRotationCount = 0;
+        //transform.eulerAngles = new Vector3(0, 0, 0);
     }
 }

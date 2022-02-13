@@ -15,6 +15,7 @@ public class LockManager : MonoBehaviour
     private bool attemptToOpenLock;
     private bool lockPickTakingDamage;
     private bool lockPickBroken;
+    private bool doorOpened;
     Action<bool> FreezeLockPickRotation;
     Action<float> UpdateKeyRotation;
     Action PlayBrokenPickAnim;
@@ -68,40 +69,43 @@ public class LockManager : MonoBehaviour
 
     void MoveLock()
     {
-        if (lockPickBroken)
-            attemptToOpenLock = false;
-
-        if (attemptToOpenLock)
+        if (!doorOpened)
         {
-            if (CanLockTurn())
+            if (lockPickBroken)
+                attemptToOpenLock = false;
+
+            if (attemptToOpenLock)
             {
-                TurnLock();
-            }
-            else
-            {
-                //If the lock pick is already taking damage we don't need to keep invoking function since its repeating
-                if (!lockPickTakingDamage)
+                if (CanLockTurn())
                 {
-                    lockPickTakingDamage = true;
-                    InvokeRepeating("DamageLockPick", 0.0f,2.0f);
+                    TurnLock();
                 }
+                else
+                {
+                    //If the lock pick is already taking damage we don't need to keep invoking function since its repeating
+                    if (!lockPickTakingDamage)
+                    {
+                        lockPickTakingDamage = true;
+                        InvokeRepeating("DamageLockPick", 0.0f, 2.0f);
+                    }
 
+                }
             }
+            //Lock should move to starting position if not trying to open it
+            else if (rotationCounter > 0)
+            {
+                CloseLock();
+                CancelInvoke("DamageLockPick");
+                lockPickTakingDamage = false;
+            }
+            if (rotationCounter == 0.0f)
+            {
+                //We cant move lock pick when opening lock so reset bool when we are no longer moving the lock
+                FreezeLockPickRotation(false);
+                lockPickBroken = false;
+            }
+            rotationCounter = Mathf.Clamp(rotationCounter, 0.0f, 1.0f);
         }
-        //Lock should move to starting position if not trying to open it
-        else if (rotationCounter > 0)
-        {
-            CloseLock();
-            CancelInvoke("DamageLockPick");
-            lockPickTakingDamage = false;
-        }
-        if (rotationCounter == 0.0f)
-        {
-            //We cant move lock pick when opening lock so reset bool when we are no longer moving the lock
-            FreezeLockPickRotation(false);
-            lockPickBroken = false;
-        }
-        rotationCounter = Mathf.Clamp(rotationCounter, 0.0f, 1.0f);
     }
 
     void TurnLock()
@@ -111,7 +115,8 @@ public class LockManager : MonoBehaviour
         UpdateKeyRotation(rotationCounter);
         if (rotationCounter >= 1.0f)
         {
-            print("Game Won!");
+            SoundEffectManager.PlaySound("DoorOpen");
+            doorOpened = true;
         }
     }
     void CloseLock()
@@ -147,6 +152,9 @@ public class LockManager : MonoBehaviour
             CancelInvoke("DamageLockPick");
             PlayBrokenPickAnim();
         }
-        //Play Audio
+        else
+        {
+            SoundEffectManager.PlaySound("PickHit");
+        }
     }
 }
