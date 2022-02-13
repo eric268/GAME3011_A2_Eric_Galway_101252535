@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockPickMovementScript : MonoBehaviour
+public class LockPickManager : MonoBehaviour
 {
     public Animator animator;
     private GameObject keyHole;
@@ -15,15 +15,22 @@ public class LockPickMovementScript : MonoBehaviour
     private bool mouseDown;
     public int pickBlendHashValue = Animator.StringToHash("Blend");
 
+    PickBrokenScript[] lockPickParts;
+
+    public int lockPickStartingHealth;
+    public int lockPickCurrentHealth;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        lockPickParts = GetComponentsInChildren<PickBrokenScript>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         keyHole = GameObject.FindGameObjectWithTag("KeyHole");
+        lockPickCurrentHealth = lockPickStartingHealth;
     }
 
     // Update is called once per frame
@@ -72,4 +79,20 @@ public class LockPickMovementScript : MonoBehaviour
         }
     }
 
+    public void LockPickBroke()
+    {
+        foreach (var pick in lockPickParts)
+            pick.PickBroke();
+        animator.SetFloat(pickBlendHashValue, 0.0f);
+        lockPickCurrentHealth = lockPickStartingHealth;
+        Invoke("ResetLockPick", 2.5f);
+    }
+
+    void ResetLockPick()
+    {
+        foreach (var pick in lockPickParts)
+            pick.ResetPick();
+        transform.position = keyHole.transform.position;
+        transform.eulerAngles = new Vector3(0, 0, 0);
+    }
 }

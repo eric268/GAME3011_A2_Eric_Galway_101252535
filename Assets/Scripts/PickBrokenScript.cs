@@ -7,7 +7,6 @@ public class PickBrokenScript : MonoBehaviour
     private Vector3 startingPosition;
     private Quaternion startingRotation;
     private Rigidbody rigidbody;
-    GameObject keyHole;
 
     public int forceDirection;
     public float forceAmount;
@@ -34,16 +33,17 @@ public class PickBrokenScript : MonoBehaviour
             ResetPick();
     }
 
-    void PickBroke()
+    public void PickBroke()
     {
         rigidbody.isKinematic = false;
         rigidbody.AddForce(Vector3.right * forceDirection * forceAmount, ForceMode.Impulse);
     }
 
-    void ResetPick()
+    public void ResetPick()
     {
         rigidbody.isKinematic = true;
         transform.position = startingPosition;
         transform.rotation = startingRotation;
     }
+
 }

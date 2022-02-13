@@ -6,18 +6,23 @@ using System;
 public class LockManager : MonoBehaviour
 {
     private Animator animator;
-    private LockPickMovementScript lockPick;
+    private LockPickManager lockPick;
     private UnlockAttributes unlockAttributes;
     private KeyMovement keyMovement;
     private readonly int blendHashValue = Animator.StringToHash("Blend");
     private float rotationCounter;
-    public float rotationSpeed;
-    private bool tryToOpenLock;
-    private bool gameWon;
+    private float pickMovementAmountOnDamage;
+    private bool attemptToOpenLock;
+    private bool lockPickTakingDamage;
+    private bool lockPickBroken;
     Action<bool> FreezeLockPickRotation;
     Action<float> UpdateKeyRotation;
+    Action PlayBrokenPickAnim;
 
-    // Start is called before the first frame update
+
+    public float rotationSpeed;
+    public float minimumLockMovement;
+    public float timeUntilDamageReoccurs;
 
     private void Awake()
     {
@@ -28,9 +33,12 @@ public class LockManager : MonoBehaviour
     private void Start()
     {
         keyMovement = GameObject.FindObjectOfType<KeyMovement>();
-        lockPick = GameObject.FindObjectOfType<LockPickMovementScript>();
+        lockPick = GameObject.FindObjectOfType<LockPickManager>();
         FreezeLockPickRotation = lockPick.FreeLockPickRotation;
         UpdateKeyRotation = keyMovement.SetKeyRotation;
+        PlayBrokenPickAnim = lockPick.LockPickBroke;
+
+        pickMovementAmountOnDamage = minimumLockMovement;
     }
 
     public void SetLockBlendValue(float percentage)
@@ -40,51 +48,69 @@ public class LockManager : MonoBehaviour
 
     private void Update()
     {
-        SetIfLockShouldOpen();
+        SetAttemptOpenLock();
         MoveLock();
     }
 
-    void SetIfLockShouldOpen()
+    void SetAttemptOpenLock()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            tryToOpenLock = true;
+            attemptToOpenLock = true;
             FreezeLockPickRotation(true);
 
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
-            tryToOpenLock = false;
+            attemptToOpenLock = false;
         }
     }
 
     void MoveLock()
     {
-        if (tryToOpenLock)
+        if (lockPickBroken)
+            attemptToOpenLock = false;
+
+        if (attemptToOpenLock)
         {
             if (CanLockTurn())
             {
-                OpenLock();
+                TurnLock();
+            }
+            else
+            {
+                //If the lock pick is already taking damage we don't need to keep invoking function since its repeating
+                if (!lockPickTakingDamage)
+                {
+                    lockPickTakingDamage = true;
+                    InvokeRepeating("DamageLockPick", 0.0f,2.0f);
+                }
+
             }
         }
+        //Lock should move to starting position if not trying to open it
         else if (rotationCounter > 0)
         {
             CloseLock();
+            CancelInvoke("DamageLockPick");
+            lockPickTakingDamage = false;
         }
         if (rotationCounter == 0.0f)
         {
+            //We cant move lock pick when opening lock so reset bool when we are no longer moving the lock
             FreezeLockPickRotation(false);
+            lockPickBroken = false;
         }
         rotationCounter = Mathf.Clamp(rotationCounter, 0.0f, 1.0f);
     }
-    void OpenLock()
+
+    void TurnLock()
     {
         rotationCounter += rotationSpeed * Time.deltaTime;
         SetLockBlendValue(rotationCounter);
         UpdateKeyRotation(rotationCounter);
         if (rotationCounter >= 1.0f)
         {
-            gameWon = true;
             print("Game Won!");
         }
     }
@@ -97,8 +123,7 @@ public class LockManager : MonoBehaviour
 
     bool CanLockTurn()
     {
-        float maxTurnAmount = CalculateLockMaxTurnAmount();
-        return rotationCounter <= maxTurnAmount;
+        return rotationCounter <= CalculateLockMaxTurnAmount(); ;
     }
 
     float CalculateLockMaxTurnAmount()
@@ -106,7 +131,22 @@ public class LockManager : MonoBehaviour
         float currentPickPosition = lockPick.animator.GetFloat(lockPick.pickBlendHashValue);
         float perfectPickPostion = (unlockAttributes.maxUnlockSpot + unlockAttributes.minUnlockSpot) / 2.0f;
         float distanceToUnlockedRotation = Mathf.Abs(perfectPickPostion - currentPickPosition) - (unlockAttributes.currentDifficultyRange / 2.0f);
-        
-       return (100.0f - (distanceToUnlockedRotation / 0.05f * unlockAttributes.currentLockTurnRatio)) / 100.0f;
+        float rotationAmount = (100.0f - (distanceToUnlockedRotation / 0.05f * unlockAttributes.currentLockTurnRatio)) / 100.0f;
+
+        return (rotationAmount <= minimumLockMovement) ? minimumLockMovement : rotationAmount;
+    }
+
+    void DamageLockPick()
+    {
+        rotationCounter -= pickMovementAmountOnDamage;
+        SetLockBlendValue(rotationCounter);
+        lockPick.lockPickCurrentHealth--;
+        if (lockPick.lockPickCurrentHealth <= 0)
+        {
+            lockPickBroken = true;
+            CancelInvoke("DamageLockPick");
+            PlayBrokenPickAnim();
+        }
+        //Play Audio
     }
 }

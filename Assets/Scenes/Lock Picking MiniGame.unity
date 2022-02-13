@@ -732,6 +732,51 @@ Transform:
   m_Father: {fileID: 2124268067}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: -180}
+--- !u!1 &1377202068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1377202070}
+  - component: {fileID: 1377202069}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1377202069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377202068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e7946307bc5f44e924355d6c8fffa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingLevel: 1
+  maxLevel: 10
+--- !u!4 &1377202070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377202068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5071054, y: -2.9335592, z: 16.513758}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1412317091
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1933,7 +1978,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4410629216860180447}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.3641, y: 0.773, z: 0}
   m_LocalScale: {x: 0.10000001, y: 0.10000001, z: 0.1}
   m_Children:
@@ -1941,7 +1986,7 @@ Transform:
   - {fileID: 454789759545727422}
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!4 &6284636789493620283
 Transform:
   m_ObjectHideFlags: 0
@@ -2168,6 +2213,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   rotationSpeed: 0.001
   pickBlendHashValue: 1784438316
+  lockPickStartingHealth: 5
+  lockPickCurrentHealth: 0
 --- !u!4 &8490584712351362625
 Transform:
   m_ObjectHideFlags: 0
@@ -2380,6 +2427,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 1
+  minimumLockMovement: 0.05
+  timeUntilDamageReoccurs: 1
 --- !u!95 &8957044128249510842
 Animator:
   serializedVersion: 3
@@ -2422,6 +2471,7 @@ MonoBehaviour:
   currentDifficultyRange: 0
   minUnlockSpot: 0
   maxUnlockSpot: 0
+  playerLevelEffectOnUnlockRange: 0.01
 --- !u!1 &9124096457834558715
 GameObject:
   m_ObjectHideFlags: 0
