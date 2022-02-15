@@ -387,7 +387,7 @@ MonoBehaviour:
   lockDifficultyText: {fileID: 484839377}
   winLossMessageText: {fileID: 1316139366}
   timeDisplayText: {fileID: 2057471230}
-  startingTime: 60
+  startingTime: 30
 --- !u!114 &395402441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -959,7 +959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728815937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -452.42, y: -254.013, z: 0}
+  m_LocalPosition: {x: -456.42, y: -256.56, z: 0}
   m_LocalScale: {x: 1, y: 1.4796375, z: 1}
   m_Children: []
   m_Father: {fileID: 395402444}
@@ -1005,7 +1005,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -7080084451781716818, guid: da04ad9ed457b584783a51b974e45814, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

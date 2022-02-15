@@ -57,6 +57,7 @@ public class LockManager : MonoBehaviour
         rotationCounter = 0.0f;
         SetLockBlendValue(rotationCounter);
         CancelInvoke("DamageLockPick");
+
     }
 
     public void SetLockBlendValue(float percentage)
@@ -66,8 +67,11 @@ public class LockManager : MonoBehaviour
 
     private void Update()
     {
-        SetAttemptOpenLock();
-        MoveLock();
+        if (!gameWon)
+        {
+            SetAttemptOpenLock();
+            MoveLock();
+        }
     }
 
     void SetAttemptOpenLock()

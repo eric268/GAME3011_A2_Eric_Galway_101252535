@@ -32,6 +32,7 @@ public class LockPickManager : MonoBehaviour
     {
         keyHole = GameObject.FindGameObjectWithTag("KeyHole");
         lockPickCurrentHealth = lockPickStartingHealth;
+        startingPos = transform.position;
     }
 
     // Update is called once per frame
@@ -96,17 +97,14 @@ public class LockPickManager : MonoBehaviour
             pick.ResetPick();
         transform.position = keyHole.transform.position;
         pickRotationCount = 0;
-       //animator.SetFloat(pickBlendHashValue, pickRotationCount);
         lockPickCurrentHealth = lockPickStartingHealth;
     }
 
     public void ResetPressed()
     {
-        //foreach (var pick in lockPickParts)
-        //    pick.PickBroke();
-        Invoke("ResetLockPick", 0.1f);
-        animator.SetFloat(pickBlendHashValue, 0.0f);
+        pickRotationCount = 0;
+        animator.SetFloat(pickBlendHashValue, pickRotationCount);
         lockPickCurrentHealth = lockPickStartingHealth;
-
+        transform.position = startingPos;
     }
 }

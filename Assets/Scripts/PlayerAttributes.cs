@@ -10,7 +10,7 @@ public class PlayerAttributes : MonoBehaviour
 
     private void Awake()
     {
-        currentLevel = Random.Range(startingLevel, maxLevel);
+        currentLevel = Random.Range(startingLevel, maxLevel + 1);
     }
 
     public void RandomizePlayerLevel()
