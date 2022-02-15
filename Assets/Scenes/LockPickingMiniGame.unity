@@ -3768,7 +3768,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rotationSpeed: 0.001
   pickBlendHashValue: 1784438316
-  lockPickStartingHealth: 5
+  lockPickStartingHealth: 3
   lockPickCurrentHealth: 0
 --- !u!4 &8490584712351362625
 Transform:
@@ -4017,9 +4017,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockDifficulty: 0
-  easyUnlockRange: 0.2
-  mediumUnlockRange: 0.1
-  hardUnlockRange: 0.05
+  easyUnlockRange: 0.1
+  mediumUnlockRange: 0.5
+  hardUnlockRange: 0.025
   easyLockTurnRatio: 10
   mediumLockTurnRatio: 20
   hardLockTurnRatio: 30
