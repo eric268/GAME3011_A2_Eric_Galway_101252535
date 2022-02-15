@@ -4018,7 +4018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockDifficulty: 0
   easyUnlockRange: 0.1
-  mediumUnlockRange: 0.5
+  mediumUnlockRange: 0.05
   hardUnlockRange: 0.025
   easyLockTurnRatio: 10
   mediumLockTurnRatio: 20
