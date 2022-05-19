@@ -18,7 +18,6 @@ public class UIManager : MonoBehaviour
     public int startingTime;
     public static int successRate;
     public static int playerLevel;
-    public static LockDifficulty lockDifficulty;
 
     private Action ResetGame;
     private KeyMovement keyMovement;
@@ -38,7 +37,6 @@ public class UIManager : MonoBehaviour
 
         ResetGame = keyMovement.ResetKeyPosition;
         ResetGame += lockManager.ResetLock;
-        ResetGame += playerAttributes.RandomizePlayerLevel;
         ResetGame += unlockAttributes.ResetUnlockAttributes;
         ResetGame += lockPickManager.ResetPressed;
     }
@@ -96,7 +94,7 @@ public class UIManager : MonoBehaviour
     {
         playerLevelText.text = "Player Level: " + PlayerAttributes.currentLevel;
         successRateText.text = "Success Rate: %" + (unlockAttributes.currentDifficultyRange * 100.0f);
-        lockDifficultyText.text = "Lock Difficulty : " + unlockAttributes.lockDifficulty;
+        lockDifficultyText.text = "Lock Difficulty : " + UnlockAttributes.lockDifficulty;
         winLossMessageText.text = "";
         timeDisplayText.text = "Timer: " + secondsRemaining;
     }

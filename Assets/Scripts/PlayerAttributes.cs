@@ -7,14 +7,4 @@ public class PlayerAttributes : MonoBehaviour
     public static int currentLevel;
     public int startingLevel;
     public int maxLevel;
-
-    private void Awake()
-    {
-        currentLevel = Random.Range(startingLevel, maxLevel + 1);
-    }
-
-    public void RandomizePlayerLevel()
-    {
-        currentLevel = Random.Range(startingLevel, maxLevel);
-    }
 }

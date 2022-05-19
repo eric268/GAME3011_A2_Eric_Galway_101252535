@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnlockAttributes : MonoBehaviour
 {
     [SerializeField]
-    public LockDifficulty lockDifficulty;
+    public static LockDifficulty lockDifficulty;
     public float easyUnlockRange = 0.2f;
     public float mediumUnlockRange = 0.1f;
     public float hardUnlockRange = 0.05f;
@@ -28,8 +28,6 @@ public class UnlockAttributes : MonoBehaviour
 
     public void SetUnlockAttributes()
     {
-        lockDifficulty = RandomlySelectLockDifficulty();
-
         switch (lockDifficulty)
         {
             case LockDifficulty.Easy:
@@ -54,14 +52,8 @@ public class UnlockAttributes : MonoBehaviour
         maxUnlockSpot = minUnlockSpot + currentDifficultyRange;
     }
 
-    LockDifficulty RandomlySelectLockDifficulty()
-    {
-        return (LockDifficulty)Random.Range(0, (int)LockDifficulty.Number_Of_Lock_Difficulties);
-    }
-
     public void ResetUnlockAttributes()
     {
-        lockDifficulty = RandomlySelectLockDifficulty();
         SetUnlockAttributes();
     }
 }

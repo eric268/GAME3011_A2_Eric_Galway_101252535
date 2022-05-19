@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/InstructionsScene.unity
+    guid: 28cc59b482b2ef24dbdfa55592fe3ea4
+  - enabled: 1
     path: Assets/Scenes/LockPickingMiniGame.unity
     guid: 9e2cf45994986b545927dfa9ef3d6060
   m_configObjects: {}
